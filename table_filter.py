@@ -1,7 +1,7 @@
 #!env python
 
-# For two-column mode.
-# Needs work.
+# For two-column documents.
+# Probably needs work.
 # Original inspiration:
 # https://groups.google.com/forum/#!msg/pandoc-discuss/RUC-tuu_qf0/h-H3RRVt1coJ
 
@@ -111,15 +111,19 @@ def tbl_contents(s):
 
 def do_filter(key, value, fmt, meta):
     if key == "Table":
+        table = "table"
+        if "_2col" in str(value[1]):
+            table = "table*"
+
         return [
-           latex(r'\begin{table*}' '\n' r'\centering'),
+           latex(r'\begin{' + table + '}' '\n' r'\centering'),
            tbl_caption(value[1]),
            tbl_alignment(value[2]),
            latex('\n' r'\toprule' '\n'),
            tbl_headers(value[3]),
            tbl_contents(value[4]),
            latex(r"\end{tabular}"),
-           latex("\\end{table*}")
+           latex("\\end{" + table + "}")
         ]
 
 
